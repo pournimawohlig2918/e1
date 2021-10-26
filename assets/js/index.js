@@ -2,7 +2,7 @@ $("#add_user").submit(function(event){
     alert("Data inserted successfully!");
 })
 
-$("#update_user").submit(function(event){
+/*$("#update_user").submit(function(event){
     event.preventDefault();
     
     var unindexed_array =$(this).serializeArray();
@@ -12,7 +12,7 @@ $.map(unindexed_array, function(n,i){
     data[n['name']] =n['value']
 })
 
-    console.log(data);
+    console.log("data here",data);
 
     var request = {
         "url":`http://localhost:3000/api/users/${data._id}`,
@@ -22,7 +22,7 @@ $.map(unindexed_array, function(n,i){
     $.ajax(request).done(function(response){
         alert("Data Updated Successfully!");
     })
-})
+})*/
 
 if(window.location.pathname =="/"){
     $ondelete =$(".table tbody td a.delete");

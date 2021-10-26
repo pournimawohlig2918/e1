@@ -74,12 +74,12 @@ exports.update = (req,res) => {
         .send({message: "Data to update can not be empty"})
     }
     const id = req.params.id;
-    employeedata.findByIdAndUpdate(id.req.body, {useFindAndModify:false})
+    employeedata.findByIdAndUpdate(id,req.body)
     .then(data =>{
         if(!data){
             res.status(404).send({message: `Cannot update user with ${id}. Maybe user not found!`})
         }else{
-            res.send(data)
+            res.redirect('http://localhost:3000')
         }
     })
 .catch(err =>{
