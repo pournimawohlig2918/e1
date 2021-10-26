@@ -1,5 +1,5 @@
 <!-- form handling -->
-<form method="POST" id="add_user">
+<form action="/add-user" method="POST" id="add_user">
     <div class="new_user">
         <div class="form-group">
             <label for="id">ID</label>
@@ -22,11 +22,12 @@
         <div class="form-group">
             <label for="salary"> Salary </label>
             <div class="radio inline">
-                <input type="radio" id="radio-2" name="salary" value=" < 5lac">
+                <input type="radio" id="radio-2" name="salary" value=" Below 5lac">
                 <label for="radio-2" class="radio-label">
-                    < 5lac </label> </div> <div class="radio inline">
-                        <input type="radio" id="radio-3" name="salary" value=" > 5lac">
-                        <label for="radio-3" class="radio-label"> >5lac </label>
+                    Below 5lac </label> </div>
+            <div class="radio inline">
+                <input type="radio" id="radio-3" name="salary" value=" Above 5lac">
+                <label for="radio-3" class="radio-label"> Above 5lac </label>
             </div>
         </div>
         <div class="form-group">

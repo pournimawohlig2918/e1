@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router()
 
-const {homeRoutes,add_user,update_user} = require('../services/render');
+const {homeRoutes,add_user,update_user,create,find} = require('../services/render');
+
 const controller = require('../controller/controller');
 
 /**
@@ -14,13 +15,17 @@ router.get('/',homeRoutes);
  * @description add users
  * @method GET / add-user
  */
+router.post('/add-user', controller.create);
 router.get('/add-user', add_user);
+
 
 /**
  * @description for Update users
  * @method GET / update-user
  */
-router.get('/update-user', update_user);
+router.get('/update-user', controller.find);
+router.put('/update-user', controller.update);
+
 
 //API
 router.post('/api/users',controller.create);

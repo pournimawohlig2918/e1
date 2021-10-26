@@ -2,28 +2,28 @@ const mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({ 
 id:{
-    type: Number,
-    required: true,
-    unique: true
+    type: String,
+    required: true
 },
 username:{
-    type: Boolean,
+    type: String,
 required: true
 },
 
 password:{
-type: Boolean,
+type: String,
 required: true
 },
 email:{
     type: String, 
-    required: true,
-    unique: true
+    required: true
 },
-salary:String,
-
+salary:{
+type:String,
+title: 'salary'
+}
 })
 
-const Userdb = mongoose.model('userdb',schema);
+const employeedata = mongoose.model('Employee',schema);
 
-module.exports = Userdb;
+module.exports = employeedata;
