@@ -80,6 +80,7 @@ exports.update = (req,res) => {
             res.status(404).send({message: `Cannot update user with ${id}. Maybe user not found!`})
         }else{
             res.redirect('http://localhost:3000')
+               // message : "User Updated successfully"
         }
     })
 .catch(err =>{
