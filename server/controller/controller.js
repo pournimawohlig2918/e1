@@ -35,8 +35,20 @@ res.status(500).send({
 }
 
 // retrieve and return all users/ a single user 
-exports.find = (req,res) => {
-   
+exports.find = async (req,res) => {
+
+   try{
+//    // For Fetching Post
+//    app.get('/', async (req, res) => {
+//        try {
+//            // Adding Pagination
+//            const limitValue = req.query.limit || 2;
+//            const skipValue = req.query.skip || 0;
+//            const posts = await postModel.find()
+//                .limit(limitValue).skip(skipValue);
+//            res.status(200).send(posts);
+//        } 
+//    });
     if(req.query.id){
  const id = req.query.id;
 
@@ -54,17 +66,23 @@ exports.find = (req,res) => {
      })
 
     } else{
-        employeedata.find()
-    .then(user =>{
-        res.send(user)
-    })
-    .catch(err => {
-        res.status(500).send({message : err.message || "Error occured while retriving user information"})
-    })
+        //console.log("inside else")
+        const user = await employeedata.find()
+        if(!user) {
+            res.send("no user found")
+        }
+        const limitValue = req.query.limit || 10;
+        const pages = req.query.pages || 1;
+        const current = req.query.current || 1
+        const users = await employeedata.find()
+            .limit(limitValue).skip(pages);
+        res.render('index',{users, pages, current});
+    }
 
+}  catch(err){
+res.send("show error");
 }
-
-}   
+} 
 
 // Update a new identified user by user id
 exports.update = (req,res) => {
