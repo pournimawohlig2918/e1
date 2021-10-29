@@ -126,3 +126,25 @@ employeedata.findByIdAndDelete(id)
     });
 });
 }
+
+
+// var pageCount =  (".setPagination").length / pageSize;
+
+// for(var i = 0 ; i<pageCount;i++){
+//     $("#pagin").append('<li><a href="#">'+(i+1)+'</a></li> ');
+// }
+// $("#pagin li").first().addClass("active")
+// showPage = function(page) {
+//     $(".setPagination").hide();
+//     $(".setPagination").each(function(n) {
+//         if (n >= pageSize * (page - 1) && n < pageSize * page)
+//             $(this).show();
+//     });        
+// }
+// showPage(1);
+
+// $("#pagin li").click(function() {
+//     $("#pagin li").removeClass("active");
+//     $(this).addClass("active");
+//     showPage(parseInt($(this).text())) 
+// });

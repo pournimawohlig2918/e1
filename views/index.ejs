@@ -32,11 +32,38 @@
             </table>
 
             <body>
-                <div style="text-align: center">
-                    <a href="/" class="previous"><i class="fas fa-angle-double-left"></i> <span
-                            style="margin: 0 20px;">Previous</span> </a>
-                    <a href="/" class="next">Next<i class="fas fa-angle-double-right"></i></a>
-
+                <!-- <script> 
+                    // Check if the condition is true and then redirect.
+                    if (!pre) {
+                        window.location.href = "https://localhost:3000/#";
+                    }
+                </script> -->
+                <!-- <script>
+                    // onclick event is assigned to the #button element.
+                    document.getElementById("button").onclick = function () {
+                        window.location.href = "https://localhost:3000/#";
+                    };
+                </script> -->
+                <!-- <p>You will be redirected to google shortly.</p> -->
+                <!-- <script>
+                    setTimeout(function () {
+                        window.location.assign(
+                            "/#"); // The URL that will be redirected too.
+                    }); // The bigger the number the longer the delay.
+                </script> -->
+                <div class="pagination">
+                    <div class="pre">
+                        <a href="/">
+                            <i class="fas fa-angle-double-left"></i>Previous
+                            <span class="pag-content"></span>
+                        </a>
+                    </div>
+                    <div class="nxt">
+                        <a href="/">
+                            Next<i class="fas fa-angle-double-right"></i>
+                            <span class="pag-content"></span>
+                        </a>
+                    </div>
                 </div>
             </body>
         </form>
