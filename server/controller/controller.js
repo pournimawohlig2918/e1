@@ -8,7 +8,7 @@ if(!req.body){
     res.status(400).send({message:"Content can not be empty!"});
     return;
 }
-console.log("gdh",req.body);
+//console.log("gdh",req.body);
 //new user
 const user = new employeedata({
     id: req.body.id[0],

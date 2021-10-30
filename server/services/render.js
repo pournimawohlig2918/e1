@@ -20,6 +20,7 @@ let add_user = (req, res) => {
 let update_user = (req, res) => {
     axios.get('http://localhost:3000',{ params:{id:req.query.id}})
     .then(function(userdata) {
+        console.log("jay jay");
         res.render("update_user",{user:userdata.data})
     })
     .catch(err => {
