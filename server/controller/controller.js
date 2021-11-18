@@ -11,7 +11,7 @@ if(!req.body){
 //console.log("gdh",req.body);
 //new user
 const user = new employeedata({
-    id: req.body.id[0],
+    id: req.body.id,
     username: req.body.username,
     password: req.body.password,
     email: req.body.email,
@@ -29,7 +29,7 @@ user
 })
 .catch(err =>{
 res.status(500).send({
-    message: err.message || "Some error occurred while creating acreate operation"
+    message: err.message || "Some error occurred while creating a create operation"
 });
 })
 }
