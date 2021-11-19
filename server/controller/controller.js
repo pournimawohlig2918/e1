@@ -24,11 +24,11 @@ const user = new employeedata({
 user
 .save(user)
 .then(data => {
-   // res.send(data)
+  // res.json(data)
    res.redirect('add-user')
 })
 .catch(err =>{
-res.status(500).send({
+res.status(301).json({
     message: err.message || "Some error occurred while creating a create operation"
 });
 })
@@ -92,17 +92,27 @@ exports.update = (req,res) => {
         .send({message: "Data to update can not be empty"})
     }
     const id = req.params.id;
-    employeedata.findByIdAndUpdate(id,req.body)
+    console.log("updatekkk",req.body)
+    console.log("to", typeof(req.body))
+    let data = {
+        id: req.body.id,
+        username: req.body.username,
+        salary: req.body.salary,
+    }
+    // console.log("updatekkk",data)
+
+    employeedata.findByIdAndUpdate(id,data)
     .then(data =>{
-        if(!data){
-            res.status(404).send({message: `Cannot update user with ${id}. Maybe user not found!`})
+        if(data){
+            console.log("data message",data)
+            res.status(201).json({message : `updated successfully`})
         }else{
-            res.redirect('http://localhost:3000')
+            res.json({message: `Cannot update user with ${id}. Maybe user not found!`})
                // message : "User Updated successfully"
         }
     })
 .catch(err =>{
-    res.status(500).send({message : "Error Update user information"})
+    res.status(301).json({message : "Error Update user information"})
 })
 }
 
