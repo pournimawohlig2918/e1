@@ -15,8 +15,8 @@ router.get('/',controller.find);
  * @description add users
  * @method GET / add-user
  */
-router.post('/add-user', controller.create);
 router.get('/add-user', add_user);
+router.post('/add-user', controller.create);
 
 
 /**

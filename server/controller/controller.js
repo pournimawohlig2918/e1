@@ -92,7 +92,7 @@ exports.update = (req,res) => {
         .send({message: "Data to update can not be empty"})
     }
     const id = req.params.id;
-    console.log("updatekkk",req.body)
+  // console.log("updatekkk",req.body)
     console.log("to", typeof(req.body))
     let data = {
         id: req.body.id,
@@ -106,7 +106,11 @@ exports.update = (req,res) => {
         if(data){
             console.log("data message",data)
             res.status(201).json({message : `updated successfully`})
-        }else{
+        }
+//         if(!data == data){
+// res.status(201).json({message : `updated....`})
+//         }
+        else{
             res.json({message: `Cannot update user with ${id}. Maybe user not found!`})
                // message : "User Updated successfully"
         }
