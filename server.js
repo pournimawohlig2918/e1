@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
-const bodyparser = require("body-parser");
+const bodyParser = require("body-parser");
 const path = require("path");
 //const Data = require('Data');
 
@@ -19,7 +19,17 @@ app.use(morgan("tiny"));
 connectDB();
 
 // parse request to body-parser
-app.use(bodyparser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+//  parse application/json
+app.use(bodyParser.json());
+
+// app.use(function (req, res) {
+//     //res.setHeader('Content-Type', 'text/plain')
+//     console.log("data shw", req.body);
+//    // res.end(JSON.stringify(req.body))
+
+//   })
 
 // set view engine
 app.set("view engine", "ejs");

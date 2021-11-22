@@ -1,10 +1,12 @@
 const { response } = require('express');
 var employeedata = require('../model/model');
+var mongoose = require('mongoose');
 
 // create and save new user 
-exports.create = (req,res) => {
+exports.create = (req,res) => { 
 // validate request
 if(!req.body){
+    console.log("create data", data)
     res.status(400).send({message:"Content can not be empty!"});
     return;
 }
@@ -25,7 +27,8 @@ user
 .save(user)
 .then(data => {
   // res.json(data)
-   res.redirect('add-user')
+   res.send(data)
+  res.redirect('add-user')
 })
 .catch(err =>{
 res.status(301).json({
@@ -52,13 +55,13 @@ exports.find = async (req,res) => {
     if(req.query.id){
  const id = req.query.id;
 
- employeedata.findById(id)
+ employeedata.find({})
  .then(data =>{
      if(!data){
           res.status(404).send({ message :"Not found user with id" +id})
      } else{
          console.log("user data", data);
-         res.render("update_user",{user: data})
+         res.status(200).json({user: data})
      }
      })
      .catch(err =>{
@@ -92,19 +95,23 @@ exports.update = (req,res) => {
         .send({message: "Data to update can not be empty"})
     }
     const id = req.params.id;
-  // console.log("updatekkk",req.body)
+  console.log("updatekkk",req.body)
     console.log("to", typeof(req.body))
     let data = {
         id: req.body.id,
         username: req.body.username,
         salary: req.body.salary,
-    }
-    // console.log("updatekkk",data)
 
-    employeedata.findByIdAndUpdate(id,data)
+    }
+    console.log("updatekkk",id,data)
+
+
+    employeedata.findByIdAndUpdate({_id: mongoose.ObjectId},
+        data)
     .then(data =>{
         if(data){
-            console.log("data message",data)
+            console.log("update data",data)
+
             res.status(201).json({message : `updated successfully`})
         }
 //         if(!data == data){
@@ -127,6 +134,7 @@ const id = req.params.id;
 employeedata.findByIdAndDelete(id)
 .then(data => {
         if(!data){
+            console.log("delete data",data)
             res.status(404).send({ message: `Cannot delete with id ${id}. Maybe id is wrong`})
         }else{
             res.send({
