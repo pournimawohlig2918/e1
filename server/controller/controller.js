@@ -27,8 +27,8 @@ user
 .save(user)
 .then(data => {
   // res.json(data)
-   res.send(data)
-  res.redirect('add-user')
+  res.send(data)
+  //res.redirect('add-user')
 })
 .catch(err =>{
 res.status(301).json({
@@ -41,54 +41,31 @@ res.status(301).json({
 exports.find = async (req,res) => {
 
    try{
-//    // For Fetching Post
-//    app.get('/', async (req, res) => {
-//        try {
-//            // Adding Pagination
-//            const limitValue = req.query.limit || 2;
-//            const skipValue = req.query.skip || 0;
-//            const posts = await postModel.find()
-//                .limit(limitValue).skip(skipValue);
-//            res.status(200).send(posts);
-//        } 
-//    });
-    if(req.query.id){
- const id = req.query.id;
+    const page = parseInt(req.body.page);
+    const limit = parseInt(req.body.limit);
 
- employeedata.find({})
- .then(data =>{
-     if(!data){
-          res.status(404).send({ message :"Not found user with id" +id})
-     } else{
-         console.log("user data", data);
-         res.status(200).json({user: data})
-     }
-     })
-     .catch(err =>{
-         res.status(500).send({message: "Error retrieving user with id" +id})
-     })
+    const startIndex = (page - 1) * limit;
 
-    } else{
+    
+    const results = {};
+
+
         //console.log("inside else")
-        const user = await employeedata.find()
+        const user = await employeedata.find().limit(limit).skip(startIndex).sort({ createdAt: 1 }).exec();
         if(!user) {
             res.send("no user found")
         }
-        const limitValue = req.query.limit || 10;
-        const pages = req.query.pages || 1;
-        const current = req.query.current || 1
-        const users = await employeedata.find()
-            .limit(limitValue).skip(pages);
-        res.render('index',{users, pages, current});
-    }
+       console.log("pagination",user)
+        res.json({user});
 
 }  catch(err){
 res.send("show error");
 }
+        
 } 
 
 // Update a new identified user by user id
-exports.update = (req,res) => {
+exports.update = async (req,res) => {
     if(!req.body){
         return res
         .status(400)
@@ -105,30 +82,32 @@ exports.update = (req,res) => {
     }
     console.log("updatekkk",id,data)
 
+ let ed = await employeedata.findOne({_id : id})
+ res.send(ed);
 
-    employeedata.findByIdAndUpdate({_id: mongoose.ObjectId},
-        data)
-    .then(data =>{
-        if(data){
-            console.log("update data",data)
+//     employeedata.findByIdAndUpdate({_id: .ObjectId},
+//         data)
+//     .then(data =>{
+//         if(data){
+//             console.log("update data",data)
 
-            res.status(201).json({message : `updated successfully`})
-        }
-//         if(!data == data){
-// res.status(201).json({message : `updated....`})
+//             res.status(201).json({message : `updated successfully`})
 //         }
-        else{
-            res.json({message: `Cannot update user with ${id}. Maybe user not found!`})
-               // message : "User Updated successfully"
-        }
-    })
-.catch(err =>{
-    res.status(301).json({message : "Error Update user information"})
-})
+// //         if(!data == data){
+// // res.status(201).json({message : `updated....`})
+// //         }
+//         else{
+//             res.json({message: `Cannot update user with ${id}. Maybe user not found!`})
+//                // message : "User Updated successfully"
+//         }
+//     })
+// .catch(err =>{
+//     res.status(301).json({message : "Error Update user information"})
+// })
 }
 
 //Delete a user with specified user id in the request
-exports.delete = (req,res) => {
+exports.delete = async (req,res) => {
 const id = req.params.id;
 
 employeedata.findByIdAndDelete(id)
@@ -137,9 +116,7 @@ employeedata.findByIdAndDelete(id)
             console.log("delete data",data)
             res.status(404).send({ message: `Cannot delete with id ${id}. Maybe id is wrong`})
         }else{
-            res.send({
-                message : "User was deleted successfully!"
-            })  
+            res.send({deleted})  
         }
 })
 .catch(err =>{
@@ -147,6 +124,9 @@ employeedata.findByIdAndDelete(id)
         message: "Could not delete User with id=" +id
     });
 });
+
+let em = await employeedata.deleteOne({_id : id})
+ res.send(em);
 }
 
 
