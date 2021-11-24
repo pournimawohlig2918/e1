@@ -39,30 +39,105 @@ res.status(301).json({
 
 // retrieve and return all users/ a single user 
 exports.find = async (req,res) => {
-
+// console.log("paginate")
    try{
-    const page = parseInt(req.body.page);
-    const limit = parseInt(req.body.limit);
+    let { page, size, sort } = req.query;
+    if (!page) {
+        page = 1;
 
-    const startIndex = (page - 1) * limit;
+    }
+    if (!size) {
+        size = 10;
+
+    }
+
+
+    const limit = parseInt(size);
+    let count = await employeedata.count();
+    const skipIndex = (page - 1) * limit;
+    const employees = await employeedata.find().sort(
+        {
+            name: 1,
+
+        }
+    ).limit(limit)
+        .skip(skipIndex)
+        // let totalpages =  Math.ceil (count/ limit) 
+        // let previous = page -1
+        // let next = Math.ceil(totalpages -page)
+    res.json({ page, size,employees, count});
+    //res.json(posts)
+}
+catch (error) {
+    res.sendStatus(500);
+}
+    // const myCustomLabels = {
+    //     totalDocs: 'itemCount',
+    //     docs: 'itemsList',
+    //     limit: 'perPage',
+    //     page: 'currentPage',
+    //     nextPage: 'next',
+    //     prevPage: 'prev',
+    //     totalPages: 'pageCount',
+    //     pagingCounter: 'slNo',
+    //     meta: 'paginator',
+    //   };
+      
+    //   const options = {
+    //     page: 1,
+    //     limit: 10,
+    //     customLabels: myCustomLabels,
+    //   };
+      
+    //   Model.paginate({}, options, function (err, result) {
+    //     // result.itemsList [here docs become itemsList]
+    //     result.paginator.itemCount = 100 
+    //     result.paginator.perPage = 10
+    //     result.paginator.currentPage = 1 
+    //     result.paginator.pageCount = 10 
+    //     result.paginator.next = 2 
+    //     result.paginator.prev = null 
+    //     result.paginator.slNo = 1 
+    //     // result.paginator.hasNextPage = true
+    //     // result.paginator.hasPrevPage = false
+    //   });
+      
+//     const page = parseInt(req.body.page);
+//     //const limit = parseInt(req.body.limit);
+// const limit = 10;
+//     const startIndex = (page - 1) * limit;
+//     const endIndex = (page * limit) -1;
 
     
-    const results = {};
+//     const results = {};
+//     if (startIndex > 0) {
+//         results.previous = {
+//             page: page - 1,
+//             limit: limit,
+//         };
+//     }
+//     if (endIndex < 1) {
+//         results.next = {
+//             page: page + 1,
+//             limit: limit,
+//         };
+//     }
 
 
-        //console.log("inside else")
-        const user = await employeedata.find().limit(limit).skip(startIndex).sort({ createdAt: 1 }).exec();
-        if(!user) {
-            res.send("no user found")
-        }
-       console.log("pagination",user)
-        res.json({user});
+//         //console.log("inside else")
+//         const user = await employeedata.find().limit(limit).skip(startIndex).sort({ createdAt: 1 }).exec();
+//         if(!user) {
+//             res.results.json("no user found")
+//         }
+//        console.log("pagination",user)
+//         res.json({user});
 
-}  catch(err){
-res.send("show error");
-}
+// }  catch(err){
+// res.send("show error");
+// }
         
 } 
+
 
 // Update a new identified user by user id
 exports.update = async (req,res) => {
@@ -83,8 +158,19 @@ exports.update = async (req,res) => {
     console.log("updatekkk",id,data)
 
  let ed = await employeedata.findOne({_id : id})
- res.send(ed);
+ if(!ed){
+    res.send({message: "user not found"});
+ }
+ 
 
+ let emp = await employeedata.updateOne({_id : id} , data)
+ //res.send(emp)
+
+ if(emp.modifiedCount == 0){
+ res.send({message: "not updated"})
+ }else{
+     res.send({message: "successfully updated"});
+ }
 //     employeedata.findByIdAndUpdate({_id: .ObjectId},
 //         data)
 //     .then(data =>{
@@ -110,23 +196,28 @@ exports.update = async (req,res) => {
 exports.delete = async (req,res) => {
 const id = req.params.id;
 
-employeedata.findByIdAndDelete(id)
-.then(data => {
-        if(!data){
-            console.log("delete data",data)
-            res.status(404).send({ message: `Cannot delete with id ${id}. Maybe id is wrong`})
-        }else{
-            res.send({deleted})  
-        }
-})
-.catch(err =>{
-    res.status(500).send({
-        message: "Could not delete User with id=" +id
-    });
-});
+// employeedata.findByIdAndDelete(id)
+// .then(data => {
+//         if(!data){
+//             console.log("delete data",data)
+//             res.status(404).send({ message: `Cannot delete with id ${id}. Maybe id is wrong`})
+//         }else{
+//             res.send({deleted})  
+//         }
+// })
+// .catch(err =>{
+//     res.status(500).send({
+//         message: "Could not delete User with id=" +id
+//     });
+// });
 
 let em = await employeedata.deleteOne({_id : id})
- res.send(em);
+if(em.deletedCount == 0 ){
+ res.json({message : " error record not delete "})
+}else {
+
+    res.send(em);
+}
 }
 
 
