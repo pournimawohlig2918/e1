@@ -43,21 +43,6 @@ app.use(`/js`, express.static(path.resolve(__dirname, `assets/js`)));
 //load routers
 app.use('/',require('./server/routes/router'))
 
-//pagination
-// app.get('/', (req, res) => {
-//     const { page, limit } = req.body
-//     const pageCount = Math.ceil(Data.length / limit);
-//     if (!page) { page = 1;}
-//     if (page > pageCount) {
-//       page = pageCount
-//     }
-//     res.json({
-//         "page": page,
-//         "pageCount": Math.ceil(Data.length / limit),
-//         "data": Data.slice(page*limit-limit, page*limit),
-//     })
-// })
-
 
 app.listen(PORT, () => {
     console.log(`server is running on http://localhost:${PORT}`);
