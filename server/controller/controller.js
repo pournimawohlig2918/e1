@@ -121,3 +121,11 @@ let em = await employeedata.deleteOne({_id : id})
     res.json({message:"successfully deleted"});
 }
 }
+
+exports.search = (req, res) => {
+    var regex = new RegExp(req.params.username, 'i');
+    console.log("regular",regex);
+    employeedata.find({ username: regex }).then((result) => {
+        res.status(200).json(result)
+    })
+}

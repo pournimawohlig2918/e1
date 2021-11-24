@@ -10,6 +10,7 @@ const controller = require('../controller/controller');
  * @method GET /
  */
 router.get('/',controller.find);
+//router.get('/search/:username',controller.search)
 
 /**
  * @description add users
@@ -29,6 +30,7 @@ router.put('/update-user', controller.update);
 
 //API
 router.post('/api/users',controller.create);
+router.get('/api/users/search/:username',controller.search)
 router.get('/api/users',controller.find);
 router.post('/api/users/:id',controller.update);
 router.delete('/api/users/:id',controller.delete);
