@@ -39,6 +39,7 @@ res.status(301).json({
 
 // retrieve and return all users/ a single user 
 exports.find = async (req,res) => {
+
    try{
     let { page, size, sort } = req.query;
     if (!page) {
@@ -54,24 +55,28 @@ exports.find = async (req,res) => {
     const limit = parseInt(size);
     let count = await employeedata.count();
     const skipIndex = (page - 1) * limit;
-    const employees = await employeedata.find().sort(
+    console.log("find hkj", req.body.username)
+    var regex = new RegExp(req.body.username, 'i');
+    const employees = await employeedata.find({ username: regex }).sort(
         {
             name: 1,
 
         }
     ).limit(limit)
         .skip(skipIndex)
+        
         // let totalpages =  Math.ceil (count/ limit) 
         // let previous = page -1
         // let next = (totalpages -page)
+        
     res.json({ page, size,employees, count});
 
 }
 catch (error) {
     res.sendStatus(500);
-}
-  
+   } 
 } 
+
 
 
 // Update a new identified user by user id
@@ -122,10 +127,10 @@ let em = await employeedata.deleteOne({_id : id})
 }
 }
 
-exports.search = (req, res) => {
-    var regex = new RegExp(req.params.username, 'i');
-    console.log("regular",regex);
-    employeedata.find({ username: regex }).then((result) => {
-        res.status(200).json(result)
-    })
-}
+// exports.search = (req, res) => {
+//     var regex = new RegExp(req.body.username, 'i');
+//     console.log("regular",regex);
+//     employeedata.find({ username: regex }).then((result) => {
+//         res.status(200).json(result)
+//     })
+// }
