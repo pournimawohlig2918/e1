@@ -32,6 +32,7 @@ router.put('/update-user', controller.update);
 router.post('/api/users',controller.create);
 // router.get('/api/users/search',controller.search)
 router.get('/api/users',controller.find);
+router.get('/api/users/sum',controller.summ);
 router.post('/api/users/:id',controller.update);
 router.delete('/api/users/:id',controller.delete);
 

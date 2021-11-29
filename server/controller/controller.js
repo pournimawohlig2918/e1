@@ -55,7 +55,7 @@ exports.find = async (req,res) => {
     const limit = parseInt(size);
     let count = await employeedata.count();
     const skipIndex = (page - 1) * limit;
-    console.log("find hkj", req.body.username)
+    //console.log("find hkj", req.body.username)
     var regex = new RegExp(req.body.username, 'i');
     const employees = await employeedata.find({ username: regex }).sort(
         {
@@ -64,7 +64,8 @@ exports.find = async (req,res) => {
         }
     ).limit(limit)
         .skip(skipIndex)
-        
+       // db.employeedata.aggregate({$group:{"_id":1, Total:{$sum:"$salary"}}})
+
         // let totalpages =  Math.ceil (count/ limit) 
         // let previous = page -1
         // let next = (totalpages -page)
@@ -87,7 +88,7 @@ exports.update = async (req,res) => {
         .send({message: "Data to update can not be empty"})
     }
     const id = req.params.id;
-  console.log("updatekkk",req.body)
+  //console.log("updatekkk",req.body)
     console.log("to", typeof(req.body))
     let data = {
         id: req.body.id,
@@ -125,6 +126,25 @@ let em = await employeedata.deleteOne({_id : id})
 
     res.json({message:"successfully deleted"});
 }
+}
+
+//Sum of a user salary
+exports.summ = async (req,res) => {
+    let employeeData = await employeedata.aggregate([
+//     {
+// $match: {
+// }
+//     },
+        {
+
+        $group: {
+            "_id": "TotalSalary",
+            "salary": {
+                $sum : "$salary"} 
+        }
+    }]    
+    )
+    res.json(employeeData);
 }
 
 // exports.search = (req, res) => {

@@ -19,7 +19,7 @@ email:{
     required: true
 },
 salary:{
-type:String,
+type:Number,
 title: 'salary'
 }
 })
